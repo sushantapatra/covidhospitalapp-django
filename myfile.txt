@@ -1,0 +1,385 @@
+===== COVID HOSPITAL SERVICE AVALIABILY APP ===== 
+step 1 => python -m venv myenv 
+step 2 => myenv\Scripts\activate //Linux or Mac => source myenv/bin/activate 
+step 3 => pip install django 
+Upgrade pip => python.exe -m pip install --upgrade pip 
+check Django version => django-admin --version 
+step 4 => django-admin startproject covidhospitalapp 
+step 5 => cd covidhospitalapp 
+step 6 => django-admin startapp covidapp
+step 7 => python manage.py makemigrations
+step 8 => python manage.py migrate
+step 9 => python manage.py createsuperuser
+
+step 10 => python manage.py runserver or python manage.py runserver 8080 
+
+
+pip freeze > requirements.txt 
+pip install -r requirements.txt 
+deactivate //deactivae vertualenvrinment
+
+
+==== Lets Start Project ====
+register the covidapp inside  covidhospitalapp/settings.py file INSTALLED_APPS ARRAY 
+
+===Explore  request object====
+https://docs.djangoproject.com/en/3.2/ref/request-response/#httprequest-objects
+
+print(request.__dict__)
+print(dir(request))
+
+=>HttpRequest object  attributes and methods:
+request.method: Returns the HTTP method of the request (e.g., "GET", "POST", "PUT", etc.).
+request.path: Returns the path of the requested URL.
+request.GET: A dictionary-like object that contains the GET parameters sent with the request.
+request.POST: A dictionary-like object that contains the POST parameters sent with the request.
+request.headers: Returns the HTTP headers of the request.
+request.body: Returns the raw HTTP request body (available for POST requests).
+request.GET.get(key, default): Retrieves the value of a GET parameter with the given key. If the parameter is not present, it returns the default value (optional).
+request.COOKIES.get(key, default): Retrieves the value of a cookie with the given key. If the cookie is not present, it returns the default value (optional).
+request.session: Provides access to the session data for the current request.
+request.session.get(key, default): Retrieves the value of a session variable with the given key. If the variable is not present, it returns the default value (optional).
+request.session[key] = value: Sets the value of a session variable with the given key.
+request.is_ajax(): Returns True if the request is an AJAX request, otherwise returns False.
+request.build_absolute_uri(location): Builds an absolute URI by combining the request's domain and the specified location.
+
+
+============ Explore  Django Model ============================
+https://docs.djangoproject.com/en/3.2/topics/db/models/
+https://docs.djangoproject.com/en/3.2/ref/models/fields/
+https://docs.djangoproject.com/en/3.2/topics/db/queries/
+https://docs.djangoproject.com/en/3.2/ref/contrib/admin/
+
+In Django, models are an integral part of the Django ORM (Object-Relational Mapping) system. Models represent the structure and behavior of data in your application's database. They are defined as Python classes that inherit from the django.db.models.Model base class.
+
+ CharField, IntegerField, BooleanField, DateField, DateTimeField, and ForeignKey, 
+
+from django.db import models
+
+class MyModel(models.Model):
+    field1 = models.CharField(max_length=50)
+    field2 = models.IntegerField()
+    field3 = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.field1
+
+The __str__() method is optional and provides a human-readable representation of the model instance. In this example, it returns the value of the field1 attribute.
+
+python manage.py makemigrations
+python manage.py migrate
+
+#using the model to create a new record:
+my_instance = MyModel(field1="Value 1", field2=123)
+my_instance.save()
+
+#update record
+my_instance = MyModel.objects.get(pk=1)
+my_instance.field1 = "New Value"
+my_instance.save()
+
+
+#query the database to retrieve records based on certain criteria:
+all_instances = MyModel.objects.all()
+filtered_instances = MyModel.objects.filter(field1="Value 1")
+
+============== Django Models ====================
+The Django documentation on "Models" covers the fundamentals of working with models in Django. Here's a summary of the key points covered in the documentation:
+
+1. Defining Models:
+   - Models are Python classes that inherit from `django.db.models.Model`.
+   - Fields are defined as class attributes and represent the database fields.
+   - Relationships between models are established using fields like `ForeignKey`, `ManyToManyField`, and `OneToOneField`.
+
+2. Field Types and Options:
+   - Django provides various field types to represent different data types, such as `CharField`, `IntegerField`, `DateField`, etc.
+   - Field options are used to customize the behavior of fields, such as `null`, `blank`, `default`, `choices`, and more.
+
+3. Database Tables and Migrations:
+   - Django automatically creates database tables based on model definitions.
+   - Migrations are used to manage changes to the database schema and are created with the `makemigrations` command.
+
+4. Querying Data:
+   - Django's ORM provides a powerful API for querying the database using querysets.
+   - Querysets allow you to filter, order, and manipulate data with methods like `filter()`, `exclude()`, `order_by()`, etc.
+   - Complex queries can be constructed using `Q` objects and chaining query methods.
+
+5. Model Relationships:
+   - Relationships between models are established using fields like `ForeignKey`, `ManyToManyField`, and `OneToOneField`.
+   - Related data can be accessed through reverse relations and queried using the related model's name in lowercase.
+
+6. Model Methods and Meta:
+   - Custom methods can be defined within model classes to perform specific actions or computations on model instances.
+   - The `Meta` class within a model allows you to define additional options and metadata, such as ordering and verbose names.
+
+7. Model Inheritance:
+   - Django supports model inheritance, allowing you to create models that inherit fields and behaviors from a base model.
+   - Inheritance options include abstract base classes, multi-table inheritance, and proxy models.
+
+8. Model Administration:
+   - Django provides an admin interface that can be used to manage and interact with models.
+   - The admin interface can be customized to control the appearance and functionality for each model.
+
+These are the main concepts covered in the Django documentation on models. It provides detailed information, examples, and usage guidelines. Refer to the official documentation for comprehensive details: https://docs.djangoproject.com/en/3.2/topics/db/models/
+
+======= Django Model Fields ====================
+The Django documentation on "Field types" provides an extensive reference guide to the various field types available in Django models. Here's a summary of the key points covered in the documentation:
+
+1. Common Field Types:
+   - `AutoField`: An automatically incrementing primary key field.
+   - `CharField`: A character string field.
+   - `IntegerField`: An integer field.
+   - `FloatField`: A floating-point number field.
+   - `BooleanField`: A boolean (true/false) field.
+   - `DateField` and `DateTimeField`: Fields for storing dates and date/time values.
+   - `ForeignKey`: A field for establishing relationships with other models.
+
+2. Additional Field Types:
+   - `EmailField`, `URLField`, `UUIDField`: Fields for specific types of data (email addresses, URLs, UUIDs).
+   - `FileField` and `ImageField`: Fields for handling file uploads.
+   - `TextField`: A field for storing large amounts of text.
+   - `DecimalField`: A field for decimal numbers with configurable precision.
+   - `BinaryField`: A field for storing raw binary data.
+
+3. Field Options:
+   - `null`: Determines whether a field can be set to `NULL` in the database.
+   - `blank`: Determines whether a field is required in forms and validation.
+   - `default`: Sets a default value for a field.
+   - `max_length`: Specifies the maximum length of a field (for string fields).
+   - `choices`: Specifies a set of choices for a field.
+   - Many other field-specific options are available, such as `max_digits` and `decimal_places` for `DecimalField`.
+
+4. Field Relationships:
+   - `ForeignKey`: Establishes a one-to-many relationship between two models.
+   - `ManyToManyField`: Defines a many-to-many relationship with another model.
+   - `OneToOneField`: Defines a one-to-one relationship with another model.
+
+5. Field Attributes and Methods:
+   - Fields have various attributes and methods that provide information and perform operations on the field's data.
+   - Some commonly used attributes include `name`, `verbose_name`, `help_text`, and `primary_key`.
+   - Methods like `get_prep_value()`, `to_python()`, and `get_internal_type()` are used internally by Django.
+
+6. Custom Field Types:
+   - Django allows you to create custom field types by subclassing existing field types or implementing your own field from scratch.
+
+The Django documentation on field types provides detailed information, including specific field options, examples, and usage guidelines. Refer to the official documentation for comprehensive details: https://docs.djangoproject.com/en/3.2/ref/models/fields/
+
+
+================== Django Model queries =====================
+The Django documentation on "Making queries" explains how to query the database using Django's powerful ORM (Object-Relational Mapping). Here's a summary of the key points covered in the documentation:
+
+1. Querysets:
+   - Querysets are representations of database queries and can be used to retrieve, filter, and manipulate data from the database.
+   - Querysets are created using the model's manager, typically accessed through the model's class (e.g., `Model.objects`).
+
+2. Retrieving Objects:
+   - Use the `all()` method to retrieve all objects of a model.
+   - Use the `get()` method to retrieve a single object based on specific criteria.
+   - Use the `filter()` method to retrieve objects that match specific conditions.
+   - Use the `exclude()` method to retrieve objects that don't match specific conditions.
+
+3. Chaining Querysets:
+   - Querysets can be chained together to build complex queries.
+   - Methods like `filter()`, `exclude()`, and `order_by()` can be used in combination to narrow down and sort the result set.
+
+4. Field Lookups:
+   - Field lookups allow you to perform queries based on specific conditions on fields.
+   - Common lookups include `exact`, `iexact`, `contains`, `icontains`, `gt`, `lt`, `in`, `startswith`, and more.
+
+5. Complex Lookups:
+   - Django provides a range of complex lookups such as `Q` objects, `F` expressions, and `aggregate()` for advanced querying.
+
+6. Querying Related Objects:
+   - Use double underscores (`__`) to traverse relationships and query related objects.
+   - For example, to query related objects, use `related_model__field`.
+
+7. Aggregation:
+   - Aggregation functions like `count()`, `sum()`, `avg()`, `min()`, and `max()` can be used to perform calculations on querysets.
+
+8. Query Expressions:
+   - Query expressions allow you to perform complex database operations at the database level.
+   - Expressions can be used for arithmetic operations, string operations, date operations, and more.
+
+9. Raw SQL Queries:
+   - Django allows you to execute raw SQL queries using the `raw()` method.
+   - Raw SQL queries should be used with caution and are generally not recommended unless necessary.
+
+This is a summary of the main concepts covered in the Django documentation on querying the database. It provides detailed information, examples, and usage guidelines. Refer to the official documentation for comprehensive details: https://docs.djangoproject.com/en/3.2/topics/db/queries/
+
+
+
+
+================ Django Admin.py ( customize and configure the Django admin interface)=====================
+In Django, the `admin.py` file in your app allows you to customize and configure the Django admin interface for managing your models. Here's a summary of how you can customize the `admin.py` file:
+
+1. Import the necessary modules:
+   - Start by importing the necessary modules at the top of your `admin.py` file:
+     ```python
+     from django.contrib import admin
+     from .models import YourModel
+     ```
+
+2. Register your models:
+   - Register your models with the admin site by creating a subclass of `admin.ModelAdmin` and using the `admin.site.register()` method:
+     ```python
+     @admin.register(YourModel)
+     class YourModelAdmin(admin.ModelAdmin):
+         pass
+     ```
+
+3. Customizing the ModelAdmin class:
+   - You can customize the `ModelAdmin` class to define how your model is displayed and managed in the admin interface.
+   - Some common customizations include:
+     - `list_display`: Specify the fields to display in the change list view.
+     - `list_filter`: Add filters to the right sidebar of the change list view.
+     - `search_fields`: Enable search functionality based on specific fields.
+     - `ordering`: Set the default ordering of the model's instances.
+     - `fields` and `fieldsets`: Control the layout of fields in the edit view.
+     - `list_per_page`: Set the number of items displayed per page in the change list view.
+     - `actions`: Define custom actions to perform on selected instances.
+   - Here's an example of customizing the `ModelAdmin` class:
+     ```python
+     @admin.register(YourModel)
+     class YourModelAdmin(admin.ModelAdmin):
+         list_display = ('field1', 'field2', 'field3')
+         list_filter = ('field1', 'field2')
+         search_fields = ('field1', 'field2')
+         ordering = ('field1',)
+         fields = ('field1', 'field2')
+     ```
+
+4. Inline Models:
+   - If your model has relationships with other models, you can use inline models to edit related models on the same page.
+   - Inline models are defined as subclasses of `admin.TabularInline` or `admin.StackedInline`.
+   - Here's an example of using inline models:
+     ```python
+     class RelatedModelInline(admin.TabularInline):
+         model = RelatedModel
+
+     @admin.register(YourModel)
+     class YourModelAdmin(admin.ModelAdmin):
+         inlines = [RelatedModelInline]
+     ```
+
+5. More Customizations:
+   - Django's admin interface offers many more customization options, such as overriding methods, adding custom views, customizing the admin site header, and more.
+   - You can refer to the Django documentation on the admin interface for more details: https://docs.djangoproject.com/en/3.2/ref/contrib/admin/
+
+By customizing the `admin.py` file in your Django app, you can control how your models are displayed and managed in the admin interface. This allows you to tailor the admin interface to suit your application's specific needs.
+
+
+======================= Django Templatetags =============================
+create a templatetags folder in app
+create a file and register and define your custom templates/helper function 
+import in top of the html file
+
+Django templatetags are a way to extend the functionality of Django's template engine. They allow you to create custom template tags and filters to perform complex operations and logic within your templates. Here's a summary of how Django templatetags work:
+
+1. Creating Templatetags:
+   - Templatetags are Python modules that contain functions or classes to perform specific tasks.
+   - Create a new directory called `templatetags` within your app directory.
+   - Inside the `templatetags` directory, create a Python module (e.g., `my_tags.py`) to define your templatetags.
+   - Import the necessary modules and decorators at the top of your module:
+     ```python
+     from django import template
+
+     register = template.Library()
+     ```
+
+2. Custom Template Tags:
+   - To create a custom template tag, define a Python function with the logic you want to perform.
+   - Use the `@register.simple_tag` decorator to register the function as a simple tag:
+     ```python
+     @register.simple_tag
+     def my_custom_tag(arg1, arg2):
+         # Perform your logic here
+         return result
+     ```
+
+3. Custom Template Filters:
+   - To create a custom template filter, define a Python function with the logic you want to perform.
+   - Use the `@register.filter` decorator to register the function as a filter:
+     ```python
+     @register.filter
+     def my_custom_filter(value, arg1, arg2):
+         # Perform your logic here
+         return result
+     ```
+
+4. Loading Templatetags:
+   - In your templates, load your custom templatetags at the top using the `{% load %}` tag:
+     ```django
+     {% load my_tags %}
+     ```
+
+5. Using Custom Templatetags:
+   - Once your templatetags are loaded, you can use them within your templates.
+   - For custom tags, use the tag syntax:
+     ```django
+     {% my_custom_tag arg1 arg2 %}
+     ```
+   - For custom filters, use the pipe syntax:
+     ```django
+     {{ value|my_custom_filter:arg1:arg2 }}
+     ```
+
+6. Passing Arguments:
+   - You can pass arguments to your custom templatetags using the tag or filter syntax.
+   - Arguments can be template variables, strings, or other values.
+   - Custom templatetags can accept any number of arguments.
+
+7. Complex Templatetags:
+   - Templatetags can also be more complex, allowing you to perform loops, conditionals, and even render other templates.
+   - You can create inclusion tags to render reusable template snippets.
+   - Inclusion tags are created using the `@register.inclusion_tag` decorator.
+
+Django's templatetags provide a powerful way to extend the functionality of the Django template engine and perform custom operations within your templates. By creating your own custom templatetags, you can encapsulate complex logic and reuse it across different templates in your Django application.
+
+Django Template tags are a powerful feature that allows you to extend the functionality of Django templates. They provide a way to perform complex logic, manipulate data, and create reusable template components. Let's dive deeper into Django template tags:
+
+1. Basic Syntax:
+   - Template tags are enclosed within `{% %}` in Django templates.
+   - The syntax for template tags is `{% tag_name argument1 argument2 %}`.
+
+2. Built-in Template Tags:
+   - Django provides a set of built-in template tags for common tasks:
+     - Control Flow: `if`, `for`, `else`, `elif`, `empty`, `with`.
+     - Loading and Extending Templates: `extends`, `include`, `block`, `super`.
+     - Template Fragment Caching: `cache`, `endcache`.
+     - URL Handling: `url`, `trans`, `trans_block`.
+
+3. Creating Custom Template Tags:
+   - Django allows you to create custom template tags to extend the template language.
+   - Custom template tags are created by writing Python code and registering it as a template tag library.
+   - A template tag library is a Python module that contains the tag definitions.
+   - The module needs to be placed in a directory specified in the `TEMPLATES` setting.
+
+4. Simple Custom Template Tags:
+   - A simple custom template tag consists of a Python function and a registration process.
+   - The Python function performs the desired logic and returns a rendered template string or a context variable.
+   - The registration process involves importing and registering the function as a template tag using the `register.simple_tag` decorator.
+
+5. Inclusion Tags:
+   - Inclusion tags allow you to render a template snippet with its own context.
+   - An inclusion tag is defined as a Python function decorated with `register.inclusion_tag`.
+   - The function specifies the template to render and the context variables to pass to the template.
+
+6. Assignment Tags:
+   - Assignment tags allow you to assign the result of a template expression to a variable.
+   - An assignment tag is defined as a Python function decorated with `register.assignment_tag`.
+   - The function performs the desired logic and returns the value to assign to the variable.
+
+7. Template Filters:
+   - Template filters provide a way to transform and format data within templates.
+   - Django provides several built-in template filters for common operations, such as string manipulation, date formatting, and more.
+   - You can also create custom template filters by defining a Python function and registering it using the `register.filter` decorator.
+
+8. Using Template Tags and Filters:
+   - To use a template tag or filter, load the tag library or filter library at the top of your template using the `{% load %}` tag.
+   - After loading the library, you can use the tags or filters within the template using the appropriate syntax.
+
+9. Template tag and filter libraries:
+   - Django provides various libraries with pre-built custom template tags and filters that you can use in your projects.
+   - Examples include the `django.contrib.humanize` library for humanizing data and the `django.templatetags.static` library for handling static files.
+
+Django's template tags and filters greatly enhance the capabilities of Django templates. They allow you to perform complex logic, reuse code, and create dynamic and interactive templates. By leveraging built-in tags, creating custom tags, and utilizing filters, you can create expressive and flexible templates for your Django applications.
