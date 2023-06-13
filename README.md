@@ -17,3 +17,9 @@ step 10 => python manage.py runserver or python manage.py runserver 8080
 pip freeze > requirements.txt 
 pip install -r requirements.txt 
 deactivate //deactivae vertualenvrinment# covidhospitalapp-django
+
+====== Project Details ============================
+1-Admin Table showing format change
+2-custom template for html (custom function)
+3-use filter to database for getting data
+4-use class base view to show details page
