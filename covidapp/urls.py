@@ -17,8 +17,10 @@ Including another URLconf
 
 from django.urls import path
 
-from covidapp.views import home
+from covidapp.views import home, HospitalDetailView
 
 urlpatterns = [
     path('', home, name="homepage"),
+    # create a url and pass integer field  http://127.0.0.1:8000/hospital/8
+    path('hospital/<int:pk>', HospitalDetailView.as_view(), name="hospital_detail"),
 ]

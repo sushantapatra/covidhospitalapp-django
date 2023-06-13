@@ -23,9 +23,9 @@ def get_availabilities(hospital):
 
 # form select box option selected function
 @register.simple_tag
-def is_selected(selected_id, id):
+def is_option_selected(selected_id, id):
     if selected_id != "":
-        if int(selected_id) == id:
+        if selected_id == str(id):
             return 'selected'
         return ''
     return ''

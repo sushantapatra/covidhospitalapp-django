@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-{% comment %} Load on top section in your  custom templates tags {% endcomment %}
-{% load custom_tags %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Covid Help</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container-fluid">
+{% extends 'covidapp/base.html' %}
+    {% comment %} Load on top section in your  custom templates tags {% endcomment %}
+    {% load custom_tags %}
+    {% block content %}
+        <style>
+            a:hover{
+                text-decoration:none;
+            }
+            a{
+                color:black;
+            }
+        </style>
         <form action="" id="filterForm" method="GET">
             <div class="row">
                 <div class="col">   
@@ -19,7 +18,7 @@
                         <select class="form-control"  id="stateSelect" name="state">
                             <option value="">select state</option>
                             {% for state in states %}
-                                <option value="{{state.pk}}" {% is_selected selected_state_id state.pk %}>{{state}}</option>
+                                <option value="{{state.pk}}" {% is_option_selected selected_state_id state.pk %}>{{state}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -30,7 +29,7 @@
                         <select class="form-control" id="citySelect" name="city">
                             <option value="">select city</option>
                             {% for city in cities %}
-                                <option value="{{ city.pk}}" {% is_selected selected_city_id city.pk %} >{{city.name}}</option>
+                                <option value="{{ city.pk}}" {% is_option_selected selected_city_id city.pk %} >{{city.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -41,13 +40,14 @@
                         <select class="form-control" id="facilitySelect" name="facility">
                             <option value="">select facility</option>
                             {% for facility in facilities %}
-                                <option value="{{ facility.pk}}" {% is_selected selected_facility_id facility.pk %} >{{facility.title}}</option>
+                                <option value="{{ facility.pk}}" {% is_option_selected selected_facility_id facility.pk %} >{{facility.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
-           
+                
             </div>
+            <a href="/" class="btn btn-danger">Reset</a>
         </form>
         <table class="table table-bordered table-striped text-center">
             <thead class="thead-light">
@@ -69,7 +69,7 @@
             <tbody>
                 {% for hospital in hospitals %}
                     <tr>
-                        <td>{{ hospital.name }}</td>
+                        <td><a href="/hospital/{{ hospital.id }}">{{ hospital.name }}</a></td>
                         {% comment %} Get all availabilities filter by hospital using custom tag {% endcomment %}
                         {% get_availabilities hospital as availabilities %}
                         {% for availability in availabilities %}
@@ -81,22 +81,21 @@
             </tbody>
             
         </table>
-    </div>
-</body>
-<script>
-window.onload=function(){
-    const stateSelect =document.getElementById('stateSelect');
-    const citySelect =document.getElementById('citySelect');
-    const facilitySelect =document.getElementById('facilitySelect');
 
-    const form =document.getElementById('filterForm');
-    const formSubmit =function(){
-        form.submit();
-    }
+        <script>
+        window.onload=function(){
+            const stateSelect =document.getElementById('stateSelect');
+            const citySelect =document.getElementById('citySelect');
+            const facilitySelect =document.getElementById('facilitySelect');
 
-    stateSelect.onchange =formSubmit
-    citySelect.onchange =formSubmit
-    facilitySelect.onchange =formSubmit
-}
-</script>
-</html>
+            const form =document.getElementById('filterForm');
+            const formSubmit =function(){
+                form.submit();
+            }
+
+            stateSelect.onchange =formSubmit
+            citySelect.onchange =formSubmit
+            facilitySelect.onchange =formSubmit
+        }
+        </script>
+{% endblock content %}
